@@ -105,11 +105,6 @@
       <button id="menu-toggle" class="md:hidden text-dark hover:text-secondary transition-custom">
         <i class="fa fa-bars text-2xl"></i>
       </button>
-      
-      <!-- 新增：contactButton 按钮（适配页面样式，添加Tailwind美化） -->
-      <button id="contactButton" class="ml-4 px-6 py-2 bg-accent text-white rounded-lg font-semibold hover:bg-accent/90 transition-custom shadow-lg hidden md:block">
-        联系
-      </button>
     </nav>
     
     <!-- 移动端导航菜单 -->
@@ -122,10 +117,6 @@
         <a href="#" class="whatsapp-link px-6 py-3 bg-secondary text-white rounded-lg font-semibold text-center hover:bg-secondary/90 transition-custom">
           <i class="fa fa-whatsapp mr-2"></i> Contact via WhatsApp
         </a>
-        <!-- 移动端同步新增 contactButton -->
-        <button id="contactButtonMobile" class="px-6 py-3 bg-accent text-white rounded-lg font-semibold hover:bg-accent/90 transition-custom shadow-lg">
-          联系
-        </button>
       </div>
     </div>
   </header>
@@ -154,6 +145,17 @@
             <a href="#solutions" class="w-full sm:w-auto px-10 py-6 bg-white border-2 border-dark text-dark rounded-lg font-bold text-xl flex items-center justify-center hover:bg-dark/5 transition-custom shadow-lg transform hover:scale-105">
               <i class="fa fa-info-circle mr-3 text-2xl"></i> Learn More
             </a>
+          </div>
+          
+          <!-- ########## 核心修改：添加纯净版contactButton及点击事件 ########## -->
+          <div class="mt-8">
+            <button id="contactButton">联系</button>
+            <script type="text/javascript">
+            document.getElementById('contactButton').addEventListener('click', function() {
+            insert_event_code_here;
+            ...
+            }, false);
+            </script>
           </div>
           
           <!-- 信任标识 -->
@@ -480,7 +482,7 @@
         : `https://web.whatsapp.com/send?phone=${encodedPhoneNumber}`;
     }
     
-    // ========== 新增：Meta 转化API 上传Lead事件核心函数 ==========
+    // ========== Meta 转化API 上传Lead事件核心函数 ==========
     async function uploadMetaLeadEvent() {
       // 跳过未配置Access Token的情况（避免报错）
       if (META_ACCESS_TOKEN === "YOUR_META_CONVERSION_API_ACCESS_TOKEN") {
@@ -551,34 +553,7 @@
         });
       });
       
-      // ========== 新增：contactButton 点击事件绑定（核心需求） ==========
-      document.getElementById('contactButton').addEventListener('click', function() {
-        // ====== 此处为你预留的事件业务逻辑占位符（insert_event_code_here） ======
-        console.log("contactButton 被点击了！"); // 测试日志
-        // 1. 可在此添加自定义业务逻辑，例如：
-        //    - 弹出联系表单
-        //    - 触发Meta额外转化事件
-        //    - 跳转至联系页面
-        //    - 调用WhatsApp跳转（复用现有逻辑）
-        uploadMetaLeadEvent(); // 可选：点击联系按钮也上传Lead事件
-        window.open(getWhatsAppLink(), '_blank'); // 可选：直接跳转WhatsApp
-        
-        // 2. 后续可在此补充更多业务代码（替换/扩展以下注释内容）
-        // insert_event_code_here;
-        // ...
-      }, false);
-      
-      // ========== 新增：移动端 contactButtonMobile 同步绑定点击事件 ==========
-      const contactButtonMobile = document.getElementById('contactButtonMobile');
-      if (contactButtonMobile) {
-        contactButtonMobile.addEventListener('click', function() {
-          console.log("移动端 contactButton 被点击了！");
-          uploadMetaLeadEvent();
-          window.open(getWhatsAppLink(), '_blank');
-          // 关闭移动端菜单
-          document.getElementById('mobile-menu').classList.add('hidden');
-        }, false);
-      }
+      // 移除原有扩展的contactButton逻辑，仅保留你提供的纯净版内联脚本
       
       // 页面加载完成后自动上传一次Lead事件（可选）
       setTimeout(() => {
