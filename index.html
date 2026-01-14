@@ -147,13 +147,24 @@
             </a>
           </div>
           
-          <!-- ########## 核心修改：添加纯净版contactButton及点击事件 ########## -->
+          <!-- ########## 核心修改：添加纯净版contactButton及点击事件（触发Facebook Contact事件） ########## -->
           <div class="mt-8">
             <button id="contactButton">联系</button>
             <script type="text/javascript">
+            // ==== 核心修改：定义触发 Facebook Contact 事件的函数 ====
+            function trackFacebookContactEvent() {
+                // 触发 Facebook 标准的 Contact 事件（替代原来的 Click 事件）
+                fbq('track', 'Contact');
+                console.log('Facebook Contact 事件已触发');
+            }
+            
+            // 绑定按钮点击事件
             document.getElementById('contactButton').addEventListener('click', function() {
-            insert_event_code_here;
-            ...
+              // 调用 Facebook Contact 事件触发函数
+              trackFacebookContactEvent();
+              // 保留原有的占位符（可后续扩展其他业务逻辑）
+              // insert_event_code_here;
+              // ...
             }, false);
             </script>
           </div>
@@ -552,8 +563,6 @@
           window.open(getWhatsAppLink(), '_blank');
         });
       });
-      
-      // 移除原有扩展的contactButton逻辑，仅保留你提供的纯净版内联脚本
       
       // 页面加载完成后自动上传一次Lead事件（可选）
       setTimeout(() => {
