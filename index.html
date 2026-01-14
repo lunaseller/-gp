@@ -8,7 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- 引入 Font Awesome -->
   <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <!-- Meta Pixel Code (替换为新像素ID：1415664903297284) -->
+  <!-- Meta Pixel Code (新像素ID：1415664903297284) -->
   <script>
   !function(f,b,e,v,n,t,s)
   {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -105,6 +105,11 @@
       <button id="menu-toggle" class="md:hidden text-dark hover:text-secondary transition-custom">
         <i class="fa fa-bars text-2xl"></i>
       </button>
+      
+      <!-- 新增：contactButton 按钮（适配页面样式，添加Tailwind美化） -->
+      <button id="contactButton" class="ml-4 px-6 py-2 bg-accent text-white rounded-lg font-semibold hover:bg-accent/90 transition-custom shadow-lg hidden md:block">
+        联系
+      </button>
     </nav>
     
     <!-- 移动端导航菜单 -->
@@ -117,6 +122,10 @@
         <a href="#" class="whatsapp-link px-6 py-3 bg-secondary text-white rounded-lg font-semibold text-center hover:bg-secondary/90 transition-custom">
           <i class="fa fa-whatsapp mr-2"></i> Contact via WhatsApp
         </a>
+        <!-- 移动端同步新增 contactButton -->
+        <button id="contactButtonMobile" class="px-6 py-3 bg-accent text-white rounded-lg font-semibold hover:bg-accent/90 transition-custom shadow-lg">
+          联系
+        </button>
       </div>
     </div>
   </header>
@@ -457,7 +466,7 @@
     const whatsappPhoneNumber = "+85268814397"; // 已替换为指定号码（带+号）
     
     // Meta 转化API 配置（请替换为你的真实配置）
-    const META_PIXEL_ID = "1415664903297284"; // 替换为新的像素ID
+    const META_PIXEL_ID = "1415664903297284"; // 新像素ID
     const META_ACCESS_TOKEN = "YOUR_META_CONVERSION_API_ACCESS_TOKEN"; // 替换为你的转化API访问令牌
     const META_API_VERSION = "v18.0"; // Meta Graph API版本
     
@@ -542,13 +551,41 @@
         });
       });
       
-      // ========== 新增：页面加载完成后自动上传一次Lead事件（可选） ==========
-      // 适合用于记录"页面访问即潜客"的场景，注释掉则仅在用户点击按钮时上传
+      // ========== 新增：contactButton 点击事件绑定（核心需求） ==========
+      document.getElementById('contactButton').addEventListener('click', function() {
+        // ====== 此处为你预留的事件业务逻辑占位符（insert_event_code_here） ======
+        console.log("contactButton 被点击了！"); // 测试日志
+        // 1. 可在此添加自定义业务逻辑，例如：
+        //    - 弹出联系表单
+        //    - 触发Meta额外转化事件
+        //    - 跳转至联系页面
+        //    - 调用WhatsApp跳转（复用现有逻辑）
+        uploadMetaLeadEvent(); // 可选：点击联系按钮也上传Lead事件
+        window.open(getWhatsAppLink(), '_blank'); // 可选：直接跳转WhatsApp
+        
+        // 2. 后续可在此补充更多业务代码（替换/扩展以下注释内容）
+        // insert_event_code_here;
+        // ...
+      }, false);
+      
+      // ========== 新增：移动端 contactButtonMobile 同步绑定点击事件 ==========
+      const contactButtonMobile = document.getElementById('contactButtonMobile');
+      if (contactButtonMobile) {
+        contactButtonMobile.addEventListener('click', function() {
+          console.log("移动端 contactButton 被点击了！");
+          uploadMetaLeadEvent();
+          window.open(getWhatsAppLink(), '_blank');
+          // 关闭移动端菜单
+          document.getElementById('mobile-menu').classList.add('hidden');
+        }, false);
+      }
+      
+      // 页面加载完成后自动上传一次Lead事件（可选）
       setTimeout(() => {
         uploadMetaLeadEvent();
       }, 3000);
       
-      // ========== 新增：为带upload-lead-event类的元素单独绑定上传事件（可选） ==========
+      // 为带upload-lead-event类的元素单独绑定上传事件（可选）
       const uploadLeadElements = document.querySelectorAll('.upload-lead-event');
       uploadLeadElements.forEach(element => {
         element.addEventListener('click', function(e) {
